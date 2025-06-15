@@ -26,6 +26,23 @@ app.route("/employees/:id").get((req, res) => {
   // before we can use it to find the employee
   const employee = employees.find((e) => e.id === +id);
 
+  const express = require('express');
+const app = express();
+
+const employeeRouter = require('./routes/employees');
+const errorHandler = require('./middleware/errorHandler');
+
+// Middleware
+app.use(express.json());
+
+// Routes
+app.use('/employees', employeeRouter);
+
+// Error handling middleware (catch-all)
+app.use(errorHandler);
+
+module.exports = app;
+
   if (!employee) {
     return res.status(404).send("Employee not found");
   }
